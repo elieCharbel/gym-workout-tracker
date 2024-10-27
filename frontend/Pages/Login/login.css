@@ -113,3 +113,25 @@
 .no-arrows {
     -moz-appearance: textfield;
 }
+    /* Remove the border and add custom styles for the select element */
+    .form-field select {
+        border: none;
+        background-color: transparent;
+        font-size: 16px Solid;
+        color: #6a6a6a; /* Adjust color if needed */
+        outline: none;
+        appearance: none;
+        margin-left: 3px;
+        padding: 5px; /* Remove default dropdown arrow */
+    }
+    
+    /* Optional: Add padding or other styles for better alignment */
+    .form-field select:focus {
+        box-shadow: none;
+    }
+    
+    .form-field {
+        border-bottom: 1px solid #ddd; /* Example style to match the underline effect */
+        padding: 5px 0;
+        
+    }
