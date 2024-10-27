@@ -1,24 +1,33 @@
-require('dotenv').config();
+// Import dependencies
 const express = require('express');
 const cors = require('cors');
-const morgan = require('morgan');
-require('dotenv').config();
+require('dotenv').config();  // Load environment variables from .env file
 
+// Create Express app
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(cors());
-app.use(morgan('dev'));
-app.use(express.json());
+// Middleware
+app.use(cors());  // Enable Cross-Origin Resource Sharing for all routes
+app.use(express.json());  // Parse incoming requests with JSON payloads
 
-app.use(express.static(path.join(__dirname, '../frontend/public')));
+// Import routes
+const authRoutes = require('./routes/auth');
+const workoutPlanRoutes = require("./routes/workoutPlans");
 
 
-// Basic route
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
-  });
+// Use routes
+app.use('/api/auth', authRoutes);  // All authentication-related routes
+app.use('/api/workout-plans', workoutPlanRoutes);
 
+
+// Error Handling Middleware (optional, good for debugging)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
+});
+
+// Start server
+const PORT = process.env.PORT || 5000;  // Default to port 5000 if not in .env
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
