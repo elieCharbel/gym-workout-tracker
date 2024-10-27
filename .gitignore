@@ -1,0 +1,14 @@
+# Logs
+logs/
+*.log
+
+# Node.js
+node_modules/
+
+# .env for environment variables
+.env
+
+# Build and cache directories
+dist/
+build/
+.cache/
