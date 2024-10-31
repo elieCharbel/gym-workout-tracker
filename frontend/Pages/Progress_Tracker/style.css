@@ -1,0 +1,25 @@
+/* styles.css */
+.container {
+    margin-top: 30px;
+  }
+  
+  #progressForm, #progressChartContainer {
+    display: none; /* Hide form and chart initially */
+  }
+  
+  .progress-heading {
+    margin-top: 20px;
+  }
+  
+  .text-center h1, .text-center h2 {
+    color: #343a40;
+  }
+  
+  .form-control {
+    font-size: 1rem;
+  }
+  
+  .btn-success {
+    margin-top: 10px;
+  }
+  
