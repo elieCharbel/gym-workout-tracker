@@ -1,0 +1,42 @@
+/* styles.css */
+.container {
+  max-width: 600px;
+  margin-top: 30px;
+}
+
+.lockers-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);  /* 5 columns */
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.locker {
+  width: 100%;
+  padding-top: 100%;  /* Maintain square aspect ratio */
+  position: relative;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.locker.available {
+  background-color: #28a745; /* Green for available */
+}
+
+.locker.selected {
+  background-color: #007bff; /* Blue for selected */
+}
+
+.locker.occupied {
+  background-color: #dc3545; /* Red for occupied */
+  cursor: not-allowed;
+}
+
+.locker-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: white;
+}
