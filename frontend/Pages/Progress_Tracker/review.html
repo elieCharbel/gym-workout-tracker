@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review Progress - Workout Tracker</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1 class="text-center">Progress Review for <span id="reviewDate"></span></h1>
+  <canvas id="progressChart"></canvas>
+  
+  <h2 class="text-center mt-5">Comparison Table</h2>
+  <table class="table table-bordered mt-3">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Weight (kg)</th>
+        <th>Body Fat (%)</th>
+        <th>BMI</th>
+        <th>Muscle Mass (kg)</th>
+      </tr>
+    </thead>
+    <tbody id="comparisonTable">
+      <!-- Table rows will be populated by JavaScript -->
+    </tbody>
+  </table>
+
+  <div class="text-center mt-4">
+    <a href="date_selection_page.html" class="btn btn-primary">Back to Date Selection</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

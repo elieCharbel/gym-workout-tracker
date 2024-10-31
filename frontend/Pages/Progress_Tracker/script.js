@@ -1,78 +1,101 @@
-// script.js
+// Temporary in-memory storage for progress data
+let progressData = {};
 
-// Initialize flatpickr for single date selection
+// Initialize flatpickr on the date picker in index.html
 document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('datePicker')) {
     flatpickr("#datePicker", {
       mode: "single",
       dateFormat: "Y-m-d",
       onChange: (_, dateStr) => {
-        setSelectedDate(dateStr);
-        showProgressForm();
+        progressData.selectedDate = dateStr;
       }
     });
+  }
+});
+
+// Function to navigate to data entry page with selected date
+function goToDataEntry() {
+  if (!progressData.selectedDate) {
+    alert("Please select a date first.");
+    return;
+  }
+  sessionStorage.setItem("selectedDate", progressData.selectedDate);
+  window.location.href = 'data_entry_page.html';
+}
+
+// Function to load selected date on data-entry.html
+if (document.getElementById('selectedDate')) {
+  document.getElementById('selectedDate').textContent = sessionStorage.getItem("selectedDate");
+}
+
+// Function to save data and navigate to review.html
+function saveAndGoToReview() {
+  const selectedDate = sessionStorage.getItem("selectedDate");
+  const data = {
+    weight: document.getElementById("weight").value,
+    bodyFat: document.getElementById("bodyFat").value,
+    bmi: document.getElementById("bmi").value,
+    muscleMass: document.getElementById("muscleMass").value,
+  };
+  progressData[selectedDate] = data;
+  sessionStorage.setItem("progressData", JSON.stringify(progressData));
+  window.location.href = 'review.html';
+}
+
+// Function to load data and display on review.html
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('reviewDate')) {
+    const selectedDate = sessionStorage.getItem("selectedDate");
+    document.getElementById("reviewDate").textContent = selectedDate;
+
+    progressData = JSON.parse(sessionStorage.getItem("progressData")) || {};
+    const currentData = progressData[selectedDate];
+
+    if (currentData) {
+      // Display chart
+      displayChart(currentData);
+
+      // Display comparison table
+      populateComparisonTable();
+    }
+  }
+});
+
+// Function to display a chart for the selected date's data
+function displayChart(data) {
+  const ctx = document.getElementById('progressChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Weight', 'Body Fat', 'BMI', 'Muscle Mass'],
+      datasets: [{
+        label: 'Progress Metrics',
+        data: [data.weight, data.bodyFat, data.bmi, data.muscleMass],
+        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e']
+      }]
+    },
+    options: {
+      scales: { y: { beginAtZero: true } }
+    }
   });
-  
-  // Function to set the selected date and display it on the form
-  function setSelectedDate(date) {
-    document.getElementById("selectedDate").textContent = date;
-  }
-  
-  // Function to display the progress form and reset fields
-  function showProgressForm() {
-    document.getElementById("progressForm").style.display = "block"; // Show form
-    document.getElementById("progressChartContainer").style.display = "none"; // Hide chart initially
-  
-    // Reset form fields
-    document.getElementById("weight").value = '';
-    document.getElementById("bodyFat").value = '';
-    document.getElementById("bmi").value = '';
-    document.getElementById("muscleMass").value = '';
-  }
-  
-  // Handle displaying the progress chart
-  function handleSaveProgress() {
-    const data = {
-      weight: document.getElementById("weight").value,
-      bodyFat: document.getElementById("bodyFat").value,
-      bmi: document.getElementById("bmi").value,
-      muscleMass: document.getElementById("muscleMass").value,
-    };
-  
-    if (validateData(data)) {
-      alert("Progress displayed temporarily!");
-      updateChart(data);
-      document.getElementById("progressChartContainer").style.display = "block"; // Show chart after saving
-    }
-  }
-  
-  // Validate user input
-  function validateData(data) {
-    if (!data.weight || !data.bodyFat || !data.bmi || !data.muscleMass) {
-      alert("Please fill in all fields.");
-      return false;
-    }
-    return true;
-  }
-  
-  // Update the chart with current progress data
-  function updateChart(data) {
-    const ctx = document.getElementById('progressChart').getContext('2d');
-  
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Weight', 'Body Fat', 'BMI', 'Muscle Mass'],
-        datasets: [{
-          label: 'Progress Metrics',
-          data: [data.weight, data.bodyFat, data.bmi, data.muscleMass],
-          backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e']
-        }]
-      },
-      options: {
-        scales: {
-          y: { beginAtZero: true }
-        }
-      }
-    });
-  }
-  
+}
+
+// Function to populate the comparison table
+function populateComparisonTable() {
+  const tableBody = document.getElementById("comparisonTable");
+  tableBody.innerHTML = '';
+
+  Object.keys(progressData).forEach(date => {
+    const entry = progressData[date];
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${date}</td>
+      <td>${entry.weight}</td>
+      <td>${entry.bodyFat}</td>
+      <td>${entry.bmi}</td>
+      <td>${entry.muscleMass}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
