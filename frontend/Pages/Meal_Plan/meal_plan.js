@@ -17,12 +17,18 @@ function addMeal() {
   renderMealPlan();
 }
 
+// Function to delete a meal from the meal plan
+function deleteMeal(index) {
+  mealPlan.splice(index, 1);  // Remove the meal from the array
+  renderMealPlan();           // Re-render the meal plan
+}
+
 // Render the meal plan on the page
 function renderMealPlan() {
   const generatedPlanDiv = document.getElementById('generated-plan');
   generatedPlanDiv.innerHTML = '<h3>Meals for Today</h3>';
 
-  mealPlan.forEach(meal => {
+  mealPlan.forEach((meal, index) => {
     const mealDiv = document.createElement('div');
     mealDiv.classList.add('card', 'mb-3');
     mealDiv.innerHTML = `
@@ -32,6 +38,7 @@ function renderMealPlan() {
           ${meal.items.map(item => `<li>${item}</li>`).join('')}
         </ul>
         <p class="card-text"><strong>Calories:</strong> ${meal.calories}</p>
+        <button class="btn btn-danger" onclick="deleteMeal(${index})">Delete</button>
       </div>
     `;
     generatedPlanDiv.appendChild(mealDiv);

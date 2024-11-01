@@ -32,12 +32,19 @@ if (document.getElementById('selectedDate')) {
 // Function to save data and navigate to review.html
 function saveAndGoToReview() {
   const selectedDate = sessionStorage.getItem("selectedDate");
-  const data = {
-    weight: document.getElementById("weight").value,
-    bodyFat: document.getElementById("bodyFat").value,
-    bmi: document.getElementById("bmi").value,
-    muscleMass: document.getElementById("muscleMass").value,
-  };
+  
+  const weight = parseFloat(document.getElementById("weight").value);
+  const bodyFat = parseFloat(document.getElementById("bodyFat").value);
+  const bmi = parseFloat(document.getElementById("bmi").value);
+  const muscleMass = parseFloat(document.getElementById("muscleMass").value);
+
+  // Check if any value is negative
+  if (weight < 0 || bodyFat < 0 || bmi < 0 || muscleMass < 0) {
+    alert("Values cannot be negative. Please enter valid data.");
+    return;
+  }
+
+  const data = { weight, bodyFat, bmi, muscleMass };
   progressData[selectedDate] = data;
   sessionStorage.setItem("progressData", JSON.stringify(progressData));
   window.location.href = 'review.html';

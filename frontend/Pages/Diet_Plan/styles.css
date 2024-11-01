@@ -25,7 +25,7 @@
   }
   
   /* Active link style */
-  .navbar-nav .nav-link.active {
+  .navbar-nav .nav-link.active{
     color: #ffdd57;
     font-weight: bold;
     text-decoration: underline;

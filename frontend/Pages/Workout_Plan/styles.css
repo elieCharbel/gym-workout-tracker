@@ -1,0 +1,46 @@
+/* Modal overlay styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 9999; /* Ensure modal is above other content */
+    transition: opacity 0.3s ease;
+}
+.nav-link{
+    font-size: large;
+}
+.nav-link:hover{
+    text-decoration: underline;
+}
+
+/* Modal content styling */
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    max-width: 300px;
+    width: 100%;
+}
+
+/* Show modal overlay when active */
+.modal-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Portfolio item image styling */
+.portfolio-item img {
+    width: 100%;           /* Ensures the image fills the column width */
+    aspect-ratio: 4 / 3;   /* Maintains a consistent aspect ratio */
+    object-fit: cover;     /* Ensures no empty space in the image block */
+    border-radius: 5px;    /* Optional: rounds the corners for a cleaner look */
+}

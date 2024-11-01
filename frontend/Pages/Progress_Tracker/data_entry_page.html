@@ -14,19 +14,19 @@
   <form id="progressForm">
     <div class="mb-3">
       <label for="weight" class="form-label">Weight (kg)</label>
-      <input type="number" id="weight" class="form-control" required>
+      <input type="number" id="weight" class="form-control" min="50" required>
     </div>
     <div class="mb-3">
       <label for="bodyFat" class="form-label">Body Fat (%)</label>
-      <input type="number" id="bodyFat" class="form-control" required>
+      <input type="number" id="bodyFat" class="form-control" min="10" required>
     </div>
     <div class="mb-3">
       <label for="bmi" class="form-label">BMI</label>
-      <input type="number" id="bmi" class="form-control" required>
+      <input type="number" id="bmi" class="form-control" min="12" required>
     </div>
     <div class="mb-3">
       <label for="muscleMass" class="form-label">Muscle Mass (kg)</label>
-      <input type="number" id="muscleMass" class="form-control" required>
+      <input type="number" id="muscleMass" class="form-control" min="4" required>
     </div>
     <button type="button" class="btn btn-success w-100" onclick="saveAndGoToReview()">Save and Review</button>
   </form>
