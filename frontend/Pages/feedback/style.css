@@ -1,0 +1,97 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.star-rating {
+    display: inline-flex; /* Align stars inline */
+    justify-content: flex-start; /* Left-align the stars */
+    gap: 5px;
+    flex-direction: row-reverse; /* Display 5 stars on the left, 1 star on the right */
+    margin-left: 0; /* Ensure no additional left margin */
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 1.5em;
+    color: #d3d3d3;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+/* Color stars on hover */
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffc107; /* Gold */
+}
+
+/* Keep stars filled when selected */
+.star-rating input[type="radio"]:checked ~ label {
+    color: #ffc107; /* Gold */
+}
+
+
+/* Satisfaction Icons */
+.satisfaction-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.satisfaction-icons input[type="radio"] {
+    display: none;
+}
+
+.satisfaction-icons label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.satisfaction-icons .emoji {
+    font-size: 1.8em;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: #000;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Hover and checked colors for each satisfaction level */
+.satisfaction-icons input[type="radio"]:checked + .awful,
+.satisfaction-icons .awful:hover {
+    background-color: #ff4d4d; /* Red */
+    color: white;
+}
+
+.satisfaction-icons input[type="radio"]:checked + .poor,
+.satisfaction-icons .poor:hover {
+    background-color: #ff9933; /* Orange */
+    color: white;
+}
+
+.satisfaction-icons input[type="radio"]:checked + .ok,
+.satisfaction-icons .ok:hover {
+    background-color: #ffeb3b; /* Yellow */
+    color: black;
+}
+
+.satisfaction-icons input[type="radio"]:checked + .good,
+.satisfaction-icons .good:hover {
+    background-color: #b2ff59; /* Light Green */
+    color: black;
+}
+
+.satisfaction-icons input[type="radio"]:checked + .awesome,
+.satisfaction-icons .awesome:hover {
+    background-color: #4caf50; /* Green */
+    color: white;
+}
+.star-rating {
+    text-align: left; /* Ensure left alignment */
+}
