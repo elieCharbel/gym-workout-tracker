@@ -15,8 +15,11 @@ let confirmationModal;  // Store modal instance for later use
 
 // Render lockers in the grid
 function renderLockers() {
-  const lockersGrid = document.getElementById("lockersGrid");
-  lockersGrid.innerHTML = "";  // Clear the grid
+  const sectionA = document.getElementById("sectionA");
+  const sectionB = document.getElementById("sectionB");
+
+  sectionA.innerHTML = "";  // Clear Section A grid
+  sectionB.innerHTML = "";  // Clear Section B grid
 
   lockers.forEach(locker => {
     // Create locker element
@@ -33,9 +36,15 @@ function renderLockers() {
     // Click event to show confirmation modal if available
     lockerDiv.addEventListener("click", () => openConfirmationModal(locker.id));
 
-    lockersGrid.appendChild(lockerDiv);
+    // Append to Section A if ID is in the first half, else to Section B
+    if (locker.id <= totalLockers / 2) {
+      sectionA.appendChild(lockerDiv);
+    } else {
+      sectionB.appendChild(lockerDiv);
+    }
   });
 }
+
 
 // Open the modal to confirm selection
 function openConfirmationModal(id) {

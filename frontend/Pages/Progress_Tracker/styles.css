@@ -1,0 +1,31 @@
+/* styles.css */
+.container {
+    margin-top: 30px;
+  }
+  h1, h2 {
+    color: #343a40;
+  }
+  .text-center h1, .text-center h2 {
+    color: #343a40;
+  }
+
+  .table {
+    margin-top: 20px;
+  }
+  .input-container {
+    max-width: 200px; /* Adjust width as desired */
+    margin: 0 auto; /* Center the input fields in the form */
+  }
+  
+  .form-control {
+    width: 100%; /* Make the input take up the full width of the container */
+  }
+  #progressForm .btn-success {
+    display: block;
+    width: 200px; /* Adjust width as needed */
+    margin: 20px auto 0; /* Center the button and add spacing */
+  }
+    
+  
+  
+  

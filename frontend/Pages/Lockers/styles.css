@@ -1,23 +1,42 @@
 /* styles.css */
-.container {
-  max-width: 600px;
-  margin-top: 30px;
+
+/* Additional styling for section headers */
+h2 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.lockers-container {
+  display: flex;
+  gap: 200px; /* Space between Section A and Section B */
+  justify-content: center; /* Center the sections within the container */
+  padding: 20px; /* Add padding around the container for more spacing */
+}
+
+.section {
+  flex: 1;
+  max-width: 400px; /* Adjust width of each section */
 }
 
 .lockers-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);  /* 5 columns */
-  gap: 10px;
-  margin-top: 20px;
+  grid-template-columns: repeat(5, 1fr); /* Set 4 columns per section */
+  gap: 20px; /* Space between lockers */
+  margin-top: 10px;
 }
 
 .locker {
   width: 100%;
-  padding-top: 100%;  /* Maintain square aspect ratio */
+  padding-top: 100%; /* Maintain square aspect ratio */
   position: relative;
   cursor: pointer;
   border-radius: 5px;
 }
+
+.locker-number {
+  font-size: 1.5rem; /* Increase font size for readability */
+}
+
 
 .locker.available {
   background-color: #28a745; /* Green for available */

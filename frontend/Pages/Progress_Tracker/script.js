@@ -1,6 +1,11 @@
 // Temporary in-memory storage for progress data
 let progressData = {};
-
+  // Display today's date beside the header
+  document.addEventListener("DOMContentLoaded", function() {
+    const today = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById("selectedDate").innerText = today.toLocaleDateString(undefined, options);
+  });
 // Initialize flatpickr on the date picker in index.html
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('datePicker')) {
