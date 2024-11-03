@@ -4,7 +4,7 @@ const pool = require('../db');
 
 // Register a new user
 const registerUser = async (req, res) => {
-  const { firstName, lastName, email, password, age, gender, weight, height, fitness_goal, experience_level } = req.body;
+  const { firstName, lastName, gender, age, phone, email, password } = req.body;
 
   try {
     // Check if the user already exists
@@ -19,8 +19,8 @@ const registerUser = async (req, res) => {
 
     // Insert the new user into the database
     const [result] = await pool.query(
-      'INSERT INTO users (firstName, lastName, email, password, age, gender, weight, height, fitness_goal, experience_level) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [firstName, lastName, email, hashedPassword, age, gender, weight, height, fitness_goal, experience_level]
+      'INSERT INTO users (firstName, lastName, gender, age, phone, email, password) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [firstName, lastName, gender, age, phone, email, hashedPassword]
     );
 
     // Respond with success
@@ -30,6 +30,7 @@ const registerUser = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
 
 const loginUser = async (req, res) => {
   const { email, password } = req.body;

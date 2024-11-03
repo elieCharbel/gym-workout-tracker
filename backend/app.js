@@ -7,7 +7,7 @@ require('dotenv').config();  // Load environment variables from .env file
 const app = express();
 
 // Middleware
-app.use(cors());  // Enable Cross-Origin Resource Sharing for all routes
+app.use(cors({ origin: 'http://127.0.0.1:5500' })); // Allows requests from port 5500
 app.use(express.json());  // Parse incoming requests with JSON payloads
 
 // Import routes
