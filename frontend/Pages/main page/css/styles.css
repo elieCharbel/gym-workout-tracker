@@ -10,6 +10,21 @@
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+ #mainNav {
+  background-color: #343a40; /* Dark gray background color */
+  color: #ffffff; /* White text color */
+}
+#mainNav .nav-link {
+  color: #ffffff !important; /* Ensures nav links are white */
+  transition: color 0.3s; /* Smooth color transition */
+}
+#mainNav .nav-link:hover {
+  color: #adb5bd !important; /* Lighter gray on hover */
+}
+.navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.1); /* White border for toggle button */
+}
+
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
