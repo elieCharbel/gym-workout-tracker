@@ -5,7 +5,53 @@
 */
 //
 // Scripts
-// 
+
+
+
+
+
+// Check if user is logged in by verifying the token presence and validity
+async function checkLogin() {
+    console.log("checkLogin function called"); // Confirm function is called
+
+    const token = localStorage.getItem('token');
+    console.log("Token:", token); // Check if token exists
+
+    if (!token) {
+        console.log("No token found, redirecting to login page");
+        alert("You are not logged in. Please log in first.");
+        window.location.href = '../Login/login.html';
+        return;
+    }
+
+    try {
+        const response = await fetch('http://localhost:5000/api/auth/verify', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        console.log("Response status:", response.status); // Log response status
+
+        if (response.status === 401) {
+            console.log("Invalid token, redirecting to login page");
+            alert("Your session has expired. Please log in again.");
+            localStorage.removeItem('token');
+            window.location.href = '../Login/login.html';
+        } else {
+            console.log("Token valid, user logged in");
+        }
+    } catch (error) {
+        console.error("Error during login verification:", error);
+        alert("An error occurred. Please log in again.");
+        localStorage.removeItem('token');
+        window.location.href = '../Login/login.html';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', checkLogin);
+
 
 
         

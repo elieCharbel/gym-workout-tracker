@@ -13,11 +13,14 @@ app.use(express.json());  // Parse incoming requests with JSON payloads
 // Import routes
 const authRoutes = require('./routes/auth');
 const workoutPlanRoutes = require("./routes/workoutPlans");
+const userRoutes = require('./routes/userRoutes');
+
 
 
 // Use routes
 app.use('/api/auth', authRoutes);  // All authentication-related routes
 app.use('/api/workout-plans', workoutPlanRoutes);
+app.use('/api/user', userRoutes);
 
 // Error Handling Middleware (optional, good for debugging)
 app.use((err, req, res, next) => {
