@@ -1,6 +1,7 @@
 let currentStep = 1;
 const token = localStorage.getItem("token");
-      function nextStep() {
+      
+        function nextStep() {
         // Validation for Step 1
         if (currentStep === 1) {
           const weight = document.getElementById("weight").value;
@@ -70,6 +71,7 @@ const token = localStorage.getItem("token");
             .then((response) => response.json())
             .then((data) => {
               if (data.success) {
+                localStorage.setItem("profileSetupComplete", "true");
                 alert("Profile setup complete!");
                 bootstrap.Modal.getInstance(
                   document.getElementById("onboardingModal")
@@ -100,22 +102,28 @@ const token = localStorage.getItem("token");
           profileGoalSelect.value === "Other" ? "block" : "none";
       }
 
-      document
-        .getElementById("onboardingForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          alert("Profile setup complete!");
-          bootstrap.Modal.getInstance(
-            document.getElementById("onboardingModal")
-          ).hide();
-        });
+     
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const profileSetupComplete = localStorage.getItem("profileSetupComplete") === "true";
-        
-            if (!profileSetupComplete) {
+      document.addEventListener("DOMContentLoaded", async () => {
+        const token = localStorage.getItem("token");
+    
+        try {
+            // Fetch profile completion status from the backend
+            const response = await fetch("http://localhost:5000/api/user/profile-status", {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok && !data.profileSetupComplete) {
+                // Show the profile setup modal if the profile is not complete
                 const onboardingModal = new bootstrap.Modal(document.getElementById("onboardingModal"));
                 onboardingModal.show();
             }
-        });
-        
+        } catch (error) {
+            console.error("Error fetching profile status:", error);
+        }
+    });
+    

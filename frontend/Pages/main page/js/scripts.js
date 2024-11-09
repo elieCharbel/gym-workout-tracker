@@ -11,46 +11,54 @@
 
 
 // Check if user is logged in by verifying the token presence and validity
+// Check login status by making a backend request
 async function checkLogin() {
-    console.log("checkLogin function called"); // Confirm function is called
-
     const token = localStorage.getItem('token');
-    console.log("Token:", token); // Check if token exists
+    console.log("Token found in localStorage:", token); // Debugging
 
+    // If no token is found, redirect to login
     if (!token) {
-        console.log("No token found, redirecting to login page");
-        alert("You are not logged in. Please log in first.");
+        console.log("No token found, redirecting to login.");
         window.location.href = '../Login/login.html';
         return;
     }
 
     try {
+        // Make a request to /api/verify to validate the token and check user existence
         const response = await fetch('http://localhost:5000/api/auth/verify', {
-            method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
             }
         });
 
-        console.log("Response status:", response.status); // Log response status
+        // If the token is expired, invalid, or the user doesn't exist, redirect to login
+        if (response.status === 403 || response.status === 401) {
+            console.log("Token expired, invalid, or user does not exist. Redirecting to login.");
+            localStorage.removeItem('token'); // Clear the invalid token
+            window.location.href = '../Login/login.html'; // Redirect to login
+            return;
+        } 
 
-        if (response.status === 401) {
-            console.log("Invalid token, redirecting to login page");
-            alert("Your session has expired. Please log in again.");
-            localStorage.removeItem('token');
-            window.location.href = '../Login/login.html';
-        } else {
-            console.log("Token valid, user logged in");
+        if (!response.ok) {
+            throw new Error('Failed to verify token and user');
         }
+
+        // If the token and user are valid, allow the user to stay on the page
+        console.log("Token and user are valid, user is logged in.");
+
     } catch (error) {
-        console.error("Error during login verification:", error);
-        alert("An error occurred. Please log in again.");
+        console.error('Error during login check:', error);
+
+        // Only redirect on specific authorization errors
         localStorage.removeItem('token');
         window.location.href = '../Login/login.html';
     }
 }
+  
+  // Call checkLogin on page load
+  document.addEventListener('DOMContentLoaded', checkLogin);
+  
 
-document.addEventListener('DOMContentLoaded', checkLogin);
 
 
 

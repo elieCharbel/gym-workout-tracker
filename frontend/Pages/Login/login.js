@@ -19,6 +19,7 @@ async function loginUser(email, password) {
 
           // Store the token in localStorage
           localStorage.setItem('token', token);
+          console.log("Stored token:", data.token); // Debugging line
           localStorage.setItem('profileSetupComplete', data.profileSetupComplete);
           // Redirect to the main page
           window.location.href = '../main page/main.html';
