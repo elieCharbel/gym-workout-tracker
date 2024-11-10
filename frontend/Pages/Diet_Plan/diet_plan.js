@@ -47,8 +47,8 @@ async function fetchAvailableMeals(mealType = "") {
     displayDefaultMealNutrients();
 
   } catch (error) {
-    console.error("Error fetching meals:", error);
-    alert("Could not load meals.");
+    // console.error("Error fetching meals:", error);
+    // alert("Could not load meals.");
   }
 }
 
@@ -73,8 +73,8 @@ async function fetchMealLogsForWeek() {
     console.log("Fetched weekly meal logs:", mealLogs); // Debugging log
     renderWeeklyMealPlan(mealLogs);
   } catch (error) {
-    console.error('Error:', error);
-    alert('Could not load weekly meal logs.');
+    // console.error('Error:', error);
+    // alert('Could not load weekly meal logs.');
   }
 }
 

@@ -1,32 +1,32 @@
 /* General container styling */
 .container {
-    max-width: 800px;
-    margin-top: 30px;
+    
+    margin-top: 0px;
   }
   
   /* Enhanced Navigation Bar */
   .navbar {
-    background: linear-gradient(135deg, #007bff, #6610f2); /* Gradient background */
+    background-color: lightgrey; /* Gradient background */
     padding: 1rem 2rem; /* Extra padding for a spacious look */
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   
   .navbar-nav .nav-link {
     font-size: 1.2rem; /* Larger font size */
-    color: #ffffff;
+    color: #000;
     padding: 0.5rem 1rem;
     transition: all 0.3s ease; /* Smooth transition for hover effects */
     font-weight: 500;
   }
   
   .navbar-nav .nav-link:hover {
-    color: #ffdd57; /* Subtle color change on hover */
+    color: blue; /* Subtle color change on hover */
     text-decoration: underline; /* Underline effect on hover */
   }
   
   /* Active link style */
   .navbar-nav .nav-link.active{
-    color: #ffdd57;
+    color: blue;
     font-weight: bold;
     text-decoration: underline;
   }

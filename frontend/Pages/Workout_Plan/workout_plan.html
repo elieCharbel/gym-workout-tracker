@@ -7,7 +7,7 @@
     <link href="../main page/css/styles.css" rel="stylesheet" />
     <script src="workout_plan.js"></script>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="../main page/assets/favicon.ico" />
+    
     <!-- Font Awesome icons-->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Bootstrap JS Bundle -->
@@ -24,28 +24,17 @@
 
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: lightgrey;">
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
-          <!-- Right-aligned item -->
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="../main page/main.html">Main Page</a>
-            </li>
-          </ul>
+          <a class="navbar-brand">Workout Plan</a>
+          <div class="navbar-nav ms-auto" style="margin-right: -80px">
+            <a class="nav-link" href="../main page/main.html">Main Page</a>
+          </div>
         </div>
       </nav>
       
       <!-- Modal Structure -->
-      <div id="modal" class="modal-overlay">
-        <div class="modal-content">
-            <label for="experience-level">Select Experience Level:</label>
-            <select id="experience-level">
-                <!-- Options will be populated by JavaScript -->
-            </select>
-            <br><br>
-            <button onclick="closeModal()">Submit</button>
-        </div>
-    </div>
+
 
 
     <!-- Workout Plan Grid -->

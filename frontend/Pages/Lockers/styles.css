@@ -59,3 +59,28 @@ h2 {
   font-weight: bold;
   color: white;
 }
+.navbar {
+  background-color: lightgrey; /* Gradient background */
+  padding: 1rem 2rem; /* Extra padding for a spacious look */
+  margin-bottom: 20px;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1.2rem; /* Larger font size */
+  color: #000;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  font-weight: 500;
+}
+
+.navbar-nav .nav-link:hover {
+  color: blue; /* Subtle color change on hover */
+  text-decoration: underline; /* Underline effect on hover */
+}
+
+/* Active link style */
+.navbar-nav .nav-link.active{
+  color: blue;
+  font-weight: bold;
+  text-decoration: underline;
+}
