@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Planner</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <div class="navbar-nav ms-auto" style="margin-right: -80px">
+            <a class="nav-link" href="../Workout_Plan/workout_plan.html">Workout Plan</a>
+          </div>
+        </div>
+      </nav>
+    <div class="container my-5">
+        <h1 class="text-center text-primary mb-4">✨ Plan Your Workout ✨</h1>
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <form id="setupForm">
+                    <div class="mb-3">
+                        <label for="days" class="form-label fw-bold">Number of Workout Days (1-7)</label>
+                        <input type="number" id="days" class="form-control" placeholder="Enter number of days (e.g., 5)" min="1" max="7" required>
+                    </div>
+                    <button type="button" id="setupPlan" class="btn btn-primary w-100">Set Up Workout Plan</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="workoutPlan" class="mt-4"></div>
+
+        <div class="text-center mt-4">
+            <a href="../Workout_Summary/workout_summary.html" id="viewWorkout" class="btn btn-info" style="display: none;">View Full Workout</a>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+        <script src="script.js"></script>
+    </div>
+</body>
+</html>

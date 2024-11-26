@@ -138,7 +138,9 @@
             </div>
             
             <div class="text-center my-4">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#customWorkoutModal">Add Custom Workout</button>
+                <button class="btn btn-primary" onclick="redirectToWorkout()">Add Custom Workout</button>
+                <button class="btn btn-primary" onclick="CreatedWorkout()">Created Workout plan</button>
+
             </div>
         </div>
     </section>
@@ -346,61 +348,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="customWorkoutModal" tabindex="-1" aria-labelledby="customWorkoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="customWorkoutModalLabel">Add Custom Workout</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="customWorkoutForm">
-                        <div class="mb-3">
-                            <label for="workoutName" class="form-label">Workout Name</label>
-                            <input type="text" class="form-control" id="workoutName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="workoutDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="workoutDescription" rows="3" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="workoutExercises" class="form-label">Exercises (comma separated)</label>
-                            <input type="text" class="form-control" id="workoutExercises" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Add Workout</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Script to handle custom workout submission -->
-    <script>
-        document.getElementById('customWorkoutForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
-            
-            // Retrieve values
-            const workoutName = document.getElementById('workoutName').value;
-            const workoutDescription = document.getElementById('workoutDescription').value;
-            const workoutExercises = document.getElementById('workoutExercises').value.split(',');
-
-            // Here, you can handle the data as needed (e.g., save to a database or display on the page)
-            console.log('Custom Workout Added:', {
-                name: workoutName,
-                description: workoutDescription,
-                exercises: workoutExercises
-            });
-
-            // Optionally, clear the form
-            this.reset();
-            // Close the modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('customWorkoutModal'));
-            modal.hide();
-        });
-    </script>
+    
     
 </body>
 </html>

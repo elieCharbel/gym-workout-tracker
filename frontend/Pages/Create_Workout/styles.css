@@ -1,0 +1,152 @@
+/* General Styling */
+body {
+    background: linear-gradient(to bottom, #f9f9f9, #e0e7ff);
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    font-size: 14px; /* Reduce base font size for a smaller look */
+}
+
+h1 {
+    font-size: 1.5rem; /* Smaller heading */
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0; /* Reduce margin for compactness */
+}
+
+/* Card Styling */
+.card {
+    border: none;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px; /* Reduce padding for smaller cards */
+    margin-bottom: 15px; /* Reduce spacing between cards */
+}
+
+/* Input Field Styling */
+.card input[type="number"] {
+    font-size: 0.8rem; /* Smaller input text size */
+    padding: 6px; /* Reduce padding inside input */
+    width: 100%;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.card input[type="number"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.3);
+}
+
+/* Button Styling */
+button {
+    font-size: 1rem; /* Smaller button text size */
+    padding: 8px; /* Reduce padding */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+button#setupPlan {
+    background: #007bff;
+    color: #fff;
+    width: 100%;
+}
+
+button#setupPlan:hover {
+    background: #0056b3;
+}
+
+#viewWorkout {
+    display: none;
+    background: #17a2b8;
+    color: white;
+    padding: 8px 12px; /* Smaller button size */
+    text-align: center;
+    border-radius: 4px;
+    margin: 10px auto;
+    width: fit-content;
+    text-decoration: none;
+    font-size: 0.9rem; /* Smaller text */
+}
+
+#viewWorkout:hover {
+    background: #138496;
+}
+
+/* Exercise Row Styling */
+.exercise-row {
+    display: flex;
+    gap: 8px; /* Reduce spacing between fields */
+    margin-bottom: 8px; /* Smaller row spacing */
+}
+
+.exercise-row input {
+    flex: 1;
+    padding: 6px; /* Reduce padding inside inputs */
+    font-size: 0.9rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+/* Increment and Decrement Buttons */
+/* Increment and Decrement Buttons */
+.increment, .decrement {
+    width: 28px; /* Button width */
+    height: 28px; /* Button height */
+    text-align: center;
+    font-size: 1rem; /* Font size inside the buttons */
+    border: 1px solid #ced4da;
+    border-radius: 50%; /* Circular buttons */
+    cursor: pointer;
+
+    /* Flexbox for centering content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.increment:hover, .decrement:hover {
+    background: #007bff;
+    color: #fff;
+}
+
+
+/* Reveal Next Day Button */
+.btn-success {
+    font-size: 0.9rem;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+.navbar {
+    background-color: lightgrey; /* Gradient background */
+    padding: 1rem 2rem; /* Extra padding for a spacious look */
+    margin-bottom: 20px;
+  }
+  
+  .navbar-nav .nav-link {
+    font-size: 1.2rem; /* Larger font size */
+    color: #000;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    font-weight: 500;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    color: blue; /* Subtle color change on hover */
+    text-decoration: underline; /* Underline effect on hover */
+  }
+  
+  /* Active link style */
+  .navbar-nav .nav-link.active{
+    color: blue;
+    font-weight: bold;
+    text-decoration: underline;
+  }
