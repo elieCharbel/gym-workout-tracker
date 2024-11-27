@@ -112,7 +112,8 @@ function renderDailyMealPlan(mealLogs) {
       <p><strong>Calories:</strong> ${log.total_calories} kcal
       <strong>Protein:</strong> ${log.total_protein} g
       <strong>Carbs:</strong> ${log.total_carbs} g
-      <strong>Fats:</strong> ${log.total_fat} g</p>`;
+      <strong>Fats:</strong> ${log.total_fat} g</p>
+       <button class="btn btn-danger btn-sm" onclick="deleteMealLog(${log.meal_log_id}, '${log.date}', ${log.total_calories}, ${log.total_protein}, ${log.total_carbs}, ${log.total_fat})">Delete</button>`;
 
     container.appendChild(mealCard);
   });
@@ -261,6 +262,56 @@ function updateProgressBars(progress) {
 
 
 
+
+
+async function deleteMealLog(mealLogId, dateTime, calories, protein, carbs, fats) {
+  if (!confirm('Are you sure you want to delete this meal log?')) return;
+
+  try {
+    // Format the date to match the database format: YYYY-MM-DD 00:00:00
+    const formattedDate = new Date(dateTime).toISOString().split('T')[0] + ' 00:00:00';
+
+    // Delete the meal log from the database
+    const response = await fetch(`http://localhost:5000/api/meal-logs/${mealLogId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) throw new Error('Failed to delete meal log');
+
+    console.log('Meal log deleted successfully.');
+
+    // Deduct the nutrients from the daily progress in the database
+    const deductResponse = await fetch('http://localhost:5000/api/daily-progress/deduct', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        date: formattedDate, // Pass the formatted date
+        calories,
+        protein,
+        carbs,
+        fats,
+      }),
+    });
+
+    if (!deductResponse.ok) throw new Error('Failed to update daily progress after deletion');
+
+    console.log('Daily progress updated successfully.');
+
+    // Refresh the frontend to reflect changes
+    fetchMealLogsForDay(); // Refresh meal logs
+    fetchDailyNutrientProgress(); // Refresh progress display
+  } catch (error) {
+    console.error('Error deleting meal log:', error);
+    alert('Could not delete meal log.');
+  }
+}
+
 document.addEventListener('DOMContentLoaded',  () => {
   fetchMealPlanGoals();         // Fetch goals
   fetchDailyNutrientProgress(); // Fetch daily progress
@@ -274,4 +325,3 @@ document.addEventListener('DOMContentLoaded',  () => {
 
   document.getElementById("meal-selection").addEventListener("change", displayMealInfo);
 });
-

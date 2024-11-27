@@ -135,3 +135,9 @@
     display: flex; /* Align content horizontally */
     flex-direction: column; /* Maintain vertical alignment */
 }
+
+.btn-danger {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+}

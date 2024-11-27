@@ -85,18 +85,13 @@ router.post('/meal-logs', authenticateToken, async (req, res) => {
       VALUES (?, ?, ?, ?, ?)
     `, [datetime, mealType, mealId, servings, nutplan_id]);
 
-    console.log('Meal Log Added:', insertResult);
+    
     res.status(201).json({ message: 'Meal log added successfully' });
   } catch (error) {
-    console.error('Error adding meal log:', error);
+    
     res.status(500).json({ message: 'Failed to add meal log' });
   }
 });
-
-
-
-
-
 
 // Create a new meal plan
 router.post('/meal-plans', authenticateToken, async (req, res) => {
@@ -245,6 +240,71 @@ router.put('/daily-progress', authenticateToken, async (req, res) => {
   }
 });
 
+// Delete a meal log
+router.delete('/meal-logs/:mealLogId', authenticateToken, async (req, res) => {
+  const { mealLogId } = req.params;
+  const { id: userId } = req.user;
+
+  try {
+    // Verify the meal log belongs to the current user's nutrition plan
+    const [result] = await pool.query(`
+      DELETE ml
+      FROM meal_logs ml
+      JOIN nutrition_plans np ON ml.nutplan_id = np.nutplan_id
+      WHERE ml.meal_log_id = ? AND np.user_id = ? AND DATE(ml.date) = CURDATE()
+    `, [mealLogId, userId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(403).json({ message: 'Meal log not found or unauthorized.' });
+    }
+
+    res.status(200).json({ message: 'Meal log deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting meal log:', error);
+    res.status(500).json({ message: 'Failed to delete meal log.' });
+  }
+});
+
+// Update daily nutrient progress after deleting a meal log
+router.put('/daily-progress/deduct', authenticateToken, async (req, res) => {
+  const { date, calories, protein, carbs, fats } = req.body;
+  const { id: userId } = req.user;
+
+  try {
+    // Fetch the active nutrition plan ID for the user
+    const [nutritionPlanResult] = await pool.query(`
+      SELECT nutplan_id FROM nutrition_plans
+      WHERE user_id = ? AND end_date IS NULL
+      ORDER BY start_date DESC LIMIT 1
+    `, [userId]);
+
+    if (nutritionPlanResult.length === 0) {
+      return res.status(400).json({ message: 'No active nutrition plan found.' });
+    }
+
+    const nutplan_id = nutritionPlanResult[0].nutplan_id;
+
+    // Deduct the values from daily progress for the specified date
+    const [updateResult] = await pool.query(`
+      UPDATE daily_nutrient_progress
+      SET 
+        calories = GREATEST(0, calories - ?),
+        protein = GREATEST(0, protein - ?),
+        carbs = GREATEST(0, carbs - ?),
+        fat = GREATEST(0, fat - ?)
+      WHERE date = ? AND nutplan_id = ?
+    `, [calories, protein, carbs, fats, date, nutplan_id]);
+
+    if (updateResult.affectedRows === 0) {
+      return res.status(404).json({ message: 'No progress found for the specified date.' });
+    }
+
+    res.status(200).json({ message: 'Daily progress updated successfully.' });
+  } catch (error) {
+    console.error('Error updating daily progress:', error);
+    res.status(500).json({ message: 'Failed to update daily progress.' });
+  }
+});
 
 
 module.exports = router;
