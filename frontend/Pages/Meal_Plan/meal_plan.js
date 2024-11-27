@@ -1,46 +1,86 @@
-let mealPlan = [];  // Temporary storage for the meal plan in memory
-let shoppingList = new Set();
+const token = localStorage.getItem("token");
 
-// Function to add a meal to the meal plan
-function addMeal() {
-  const mealName = document.getElementById('meal-name').value;
-  const mealItems = document.getElementById('meal-items').value.split(',').map(item => item.trim());
-  const mealCalories = parseInt(document.getElementById('meal-calories').value);
+// Function to fetch and display the current meal plan
+async function fetchCurrentMealPlan() {
+  try {
+    const response = await fetch("http://localhost:5000/api/meal-plans/current", {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
 
-  // Create meal object
-  const meal = { name: mealName, items: mealItems, calories: mealCalories };
-  mealPlan.push(meal);  // Add meal to the plan
-
-  mealItems.forEach(item => shoppingList.add(item));  // Update shopping list
-
-  // Render the meal plan
-  renderMealPlan();
+    if (response.ok) {
+      const plan = await response.json();
+      document.getElementById("plan-details").innerText = `
+        Plan Name: ${plan.plan_name}
+        | Calories: ${plan.calories_per_day} kcal
+        | Protein: ${plan.protein_grams} g
+        | Carbs: ${plan.carbs_grams} g
+        | Fats: ${plan.fat_grams} g
+      `;
+    } else {
+      document.getElementById("plan-details").innerText = "No active meal plan";
+    }
+  } catch (error) {
+    console.error("Error fetching current meal plan:", error);
+  }
 }
 
-// Function to delete a meal from the meal plan
-function deleteMeal(index) {
-  mealPlan.splice(index, 1);  // Remove the meal from the array
-  renderMealPlan();           // Re-render the meal plan
+// Function to create a new meal plan
+async function createMealPlan(event) {
+  event.preventDefault();
+
+  const planName = document.getElementById('plan-name').value;
+  const dailyCalories = parseInt(document.getElementById('daily-calories').value);
+  const dailyProtein = parseInt(document.getElementById('daily-protein').value);
+  const dailyCarbs = parseInt(document.getElementById('daily-carbs').value);
+  const dailyFats = parseInt(document.getElementById('daily-fats').value);
+
+  try {
+    const response = await fetch("http://localhost:5000/api/meal-plans", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ planName, dailyCalories, dailyProtein, dailyCarbs, dailyFats }),
+    });
+
+    if (response.ok) {
+      await fetchCurrentMealPlan(); // Refresh the displayed meal plan
+      alert("Meal Plan Created Successfully!");
+    } else {
+      throw new Error("Failed to create meal plan");
+    }
+  } catch (error) {
+    console.error("Error creating meal plan:", error);
+  }
 }
 
-// Render the meal plan on the page
-function renderMealPlan() {
-  const generatedPlanDiv = document.getElementById('generated-plan');
-  generatedPlanDiv.innerHTML = '<h3>Meals for Today</h3>';
+// Function to end the current meal plan
+async function endMealPlan() {
+  try {
+    const response = await fetch("http://localhost:5000/api/meal-plans/end", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  mealPlan.forEach((meal, index) => {
-    const mealDiv = document.createElement('div');
-    mealDiv.classList.add('card', 'mb-3');
-    mealDiv.innerHTML = `
-      <div class="card-body">
-        <h5 class="card-title">${meal.name}</h5>
-        <ul class="list-unstyled">
-          ${meal.items.map(item => `<li>${item}</li>`).join('')}
-        </ul>
-        <p class="card-text"><strong>Calories:</strong> ${meal.calories}</p>
-        <button class="btn btn-danger" onclick="deleteMeal(${index})">Delete</button>
-      </div>
-    `;
-    generatedPlanDiv.appendChild(mealDiv);
-  });
+    if (response.ok) {
+      document.getElementById("plan-details").innerText = "Meal Plan Ended";
+      alert("Meal Plan Ended Successfully!");
+    } else {
+      throw new Error("Failed to end meal plan");
+    }
+  } catch (error) {
+    console.error("Error ending meal plan:", error);
+  }
 }
+
+document.getElementById("meal-plan-form").addEventListener("submit", createMealPlan);
+document.getElementById("end-plan").addEventListener("click", endMealPlan);
+
+// Fetch and display the current meal plan on page load
+document.addEventListener("DOMContentLoaded", fetchCurrentMealPlan);

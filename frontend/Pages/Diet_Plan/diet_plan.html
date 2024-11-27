@@ -13,14 +13,14 @@
   <body>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg">
-      <div class="container ">
+      <div class="container">
         <div class="navbar-nav ml-5">
           <a class="nav-link active">Diet Plan</a>
           <a class="nav-link" href="/frontend/Pages/Meal_Plan/meal_plan.html"
             >Create Meal Plan</a
           >
         </div>
-        <div class="navbar-nav" style="margin-right: -80px;">
+        <div class="navbar-nav" style="margin-right: -80px">
           <a class="nav-link" href="../main page/main.html">Main Page</a>
         </div>
       </div>
@@ -28,10 +28,10 @@
 
     <div class="container mt-4">
       <div class="row">
-        <!-- Left Column: Form and Progress Bars -->
+        <!-- Left Column: Add Meal Form -->
         <div class="col-md-6">
           <div class="card p-4 shadow">
-            <h2>Today's Meals</h2>
+            <h2>Add Meal</h2>
             <form id="meal-plan-form" class="mt-4">
               <div class="mb-3">
                 <label for="meal-date" class="form-label">Date:</label>
@@ -42,6 +42,16 @@
                   required
                 />
               </div>
+              <div class="mb-3">
+                <label for="meal-time" class="form-label">Time:</label>
+                <input
+                  type="time"
+                  id="meal-time"
+                  class="form-control"
+                  required
+                />
+              </div>
+
               <div class="mb-3">
                 <label for="meal-type" class="form-label">Meal Type:</label>
                 <select id="meal-type" class="form-select" required>
@@ -55,12 +65,14 @@
                 <label for="meal-selection" class="form-label"
                   >Select Meal:</label
                 >
-                <select id="meal-selection" class="form-select" required>
-                  <!-- Options populated dynamically -->
-                </select>
+                <select
+                  id="meal-selection"
+                  class="form-select"
+                  required
+                ></select>
               </div>
 
-              <!-- Selected Meal Nutritional Information -->
+              <!-- Display nutrient info for selected meal -->
               <div id="meal-info" class="mb-3">
                 <p>Calories: <span id="meal-calories">0</span> kcal</p>
                 <p>Protein: <span id="meal-protein">0</span> g</p>
@@ -84,88 +96,82 @@
 
               <button type="submit" class="btn btn-primary">Add Meal</button>
             </form>
+          </div>
+        </div>
 
-            <!-- Nutrient Progress Bars -->
-            <h3 class="mt-4">Caloric and Nutrient Progress</h3>
+        <!-- Right Column: Nutrient Progress -->
+        <div class="col-md-6">
+          <div class="card p-4 shadow">
+            <h3>Caloric and Nutrient Progress</h3>
+
             <div class="progress mb-3">
               <div
                 id="calorie-progress"
                 class="progress-bar bg-success"
-                role="progressbar"
                 style="width: 0%"
-                aria-valuenow="0"
-                aria-valuemin="0"
-                aria-valuemax="100"
               ></div>
             </div>
             <p>
-              Calories Consumed: <span id="calories-consumed">0</span>/<span
+              Calories: <span id="calories-consumed">0</span>/<span
                 id="calorie-goal"
-                >2000</span
+                >0</span
               >
+              kcal
             </p>
 
             <div class="progress mb-3">
               <div
                 id="protein-progress"
                 class="progress-bar bg-info"
-                role="progressbar"
                 style="width: 0%"
-                aria-valuenow="0"
-                aria-valuemin="0"
-                aria-valuemax="100"
               ></div>
             </div>
             <p>
-              Protein Consumed: <span id="protein-consumed">0</span>/<span
+              Protein: <span id="protein-consumed">0</span>/<span
                 id="protein-goal"
-                >150g</span
+                >0</span
               >
+              g
             </p>
 
             <div class="progress mb-3">
               <div
                 id="carbs-progress"
                 class="progress-bar bg-warning"
-                role="progressbar"
                 style="width: 0%"
-                aria-valuenow="0"
-                aria-valuemin="0"
-                aria-valuemax="100"
               ></div>
             </div>
             <p>
-              Carbs Consumed: <span id="carbs-consumed">0</span>/<span
-                id="carbs-goal"
-                >250g</span
+              Carbs: <span id="carbs-consumed">0</span>/<span id="carbs-goal"
+                >0</span
               >
+              g
             </p>
 
             <div class="progress mb-3">
               <div
                 id="fats-progress"
                 class="progress-bar bg-danger"
-                role="progressbar"
                 style="width: 0%"
-                aria-valuenow="0"
-                aria-valuemin="0"
-                aria-valuemax="100"
               ></div>
             </div>
             <p>
-              Fats Consumed: <span id="fats-consumed">0</span>/<span
-                id="fats-goal"
-                >70g</span
+              Fats: <span id="fats-consumed">0</span>/<span id="fats-goal"
+                >0</span
               >
+              g
             </p>
           </div>
         </div>
+      </div>
 
-        <!-- Right Column: Weekly Meal Logs -->
-        <div class="col-md-6">
-          <div id="generated-plan" class="mt-4 card p-4">
-            <h3>Meals for the Current Week</h3>
-            <!-- Weekly meal log will be displayed here -->
+      <!-- Bottom Row: Daily Meal Log -->
+      <div class="row mt-4">
+        <div class="col">
+          <div class="card p-4 shadow">
+            <h3>Meals for the Current Day</h3>
+            <div id="generated-plan" class="card p-4 shadow"></div>
+            <!-- Daily meal log will be displayed here -->
           </div>
         </div>
       </div>

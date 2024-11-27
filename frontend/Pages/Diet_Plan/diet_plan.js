@@ -19,7 +19,6 @@ async function fetchAvailableMeals(mealType = "") {
     if (!response.ok) throw new Error("Failed to fetch meals");
 
     const meals = await response.json();
-    console.log("Fetched weekly meal logs:" + meals);
     const mealSelection = document.getElementById("meal-selection");
 
     // Clear existing meal options
@@ -53,59 +52,69 @@ async function fetchAvailableMeals(mealType = "") {
 }
 
 
-async function fetchMealLogsForWeek() {
+// Fetch meal logs for the current day
+async function fetchMealLogsForDay() {
   try {
-    const response = await fetch('http://localhost:5000/api/meal-logs/week', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
+    const response = await fetch("http://localhost:5000/api/meal-logs/day", {
+      headers: { Authorization: `Bearer ${token}` },
     });
-    
-    if (response.status === 403 || response.status === 401) {
-      handleTokenExpiration();
-      return;
-    }
-    
-    if (!response.ok) throw new Error('Failed to fetch weekly meal logs');
-    
+
+    if (!response.ok) throw new Error("Failed to fetch daily meal logs");
+
     const mealLogs = await response.json();
-    
-    console.log("Fetched weekly meal logs:", mealLogs); // Debugging log
-    renderWeeklyMealPlan(mealLogs);
+    console.log('Fetched Daily Meal Logs:', mealLogs); // Debugging
+    renderDailyMealPlan(mealLogs);
   } catch (error) {
-    // console.error('Error:', error);
-    // alert('Could not load weekly meal logs.');
+    console.error("Error:", error);
+    alert("Could not load daily meal logs.");
   }
 }
 
+async function fetchMealPlanGoals() {
+  try {
+    const response = await fetch("http://localhost:5000/api/meal-plans/goals", {
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
 
-// Helper function to render weekly meal logs on the page
-function renderWeeklyMealPlan(mealLogs) {
-  const generatedPlanDiv = document.getElementById("generated-plan");
-  generatedPlanDiv.innerHTML = "<h3>Meals for the Current Week</h3>";
+    if (!response.ok) throw new Error("Failed to fetch meal plan goals");
+
+    const goals = await response.json();
+
+    // Display the goals in the nutrient progress section
+    document.getElementById("calorie-goal").innerText = `${goals.calories_per_day}`;
+    document.getElementById("protein-goal").innerText = `${goals.protein_grams}`;
+    document.getElementById("carbs-goal").innerText = `${goals.carbs_grams}`;
+    document.getElementById("fats-goal").innerText = `${goals.fat_grams}`;
+  } catch (error) {
+    console.error("Error fetching meal plan goals:", error);
+  }
+}
+
+function renderDailyMealPlan(mealLogs) {
+  const container = document.getElementById("generated-plan");
+  container.innerHTML = ""; // Clear previous content
 
   mealLogs.forEach((log) => {
-    let utcDate = new Date(log.date);
-    utcDate.setHours(utcDate.getHours() + 2);
-
-    const formattedDate = utcDate.toLocaleString("en-US", {
-      weekday: "long",
+    const lebanonTime = new Date(log.date).toLocaleString("en-US", {
       hour: "numeric",
       minute: "numeric",
       hour12: true,
       timeZone: "Asia/Beirut",
     });
 
-    const mealDiv = document.createElement("div");
-    mealDiv.classList.add("card", "mb-3");
-    mealDiv.innerHTML = `
-      <div class="card-body">
-        <h5 class="card-title">${formattedDate} - ${log.meal_type}</h5>
-        <p class="card-text"><strong>Meal:</strong> ${log.meal_name || "N/A"}</p>
-        <p class="card-text"><strong>Calories:</strong> ${log.total_calories || "N/A"}</p>
-      </div>
-    `;
-    generatedPlanDiv.appendChild(mealDiv);
+    const mealCard = document.createElement("div");
+    mealCard.className = "card mb-3 p-3 shadow-sm";
+    mealCard.innerHTML = `
+      <h4>${lebanonTime} - ${log.meal_type}</h4>
+      <h5>${log.meal_name}</h5>
+      <p><strong>Calories:</strong> ${log.total_calories} kcal
+      <strong>Protein:</strong> ${log.total_protein} g
+      <strong>Carbs:</strong> ${log.total_carbs} g
+      <strong>Fats:</strong> ${log.total_fat} g</p>`;
+
+    container.appendChild(mealCard);
   });
 }
 
@@ -129,22 +138,45 @@ function displayDefaultMealNutrients() {
 // Event listener for form submission
 document.getElementById('meal-plan-form').addEventListener('submit', addMeal);
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadDailyProgress(); // Load and display saved progress on page load
-  fetchAvailableMeals(); // Load available meals
-  fetchMealLogsForWeek(); // Fetch and display weekly meal logs
+async function fetchDailyNutrientProgress() {
+  try {
+    const response = await fetch("http://localhost:5000/api/daily-progress", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-  // Update dropdown meals based on meal type selection
-  document.getElementById("meal-type").addEventListener("change", (event) => {
-    const selectedMealType = event.target.value;
-    fetchAvailableMeals(selectedMealType); // Filter meals based on type
-  });
+    if (!response.ok) throw new Error("Failed to fetch daily nutrient progress");
 
-  // Update meal info display when meal selection changes
-  document.getElementById("meal-selection").addEventListener("change", displayMealInfo);
-});
+    const progress = await response.json();
+
+    document.getElementById("calories-consumed").innerText = progress.calories || 0;
+    document.getElementById("protein-consumed").innerText = progress.protein || 0;
+    document.getElementById("carbs-consumed").innerText = progress.carbs || 0;
+    document.getElementById("fats-consumed").innerText = progress.fat || 0;
+
+    updateProgressBars(progress);
+  } catch (error) {
+    console.error("Error fetching daily nutrient progress:", error);
+  }
+}
 
 
+
+async function updateDailyNutrientProgress(date, calories, protein, carbs, fats) {
+  try {
+    const response = await fetch("http://localhost:5000/api/daily-progress", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ date, calories, protein, carbs, fats }),
+    });
+
+    if (!response.ok) throw new Error("Failed to update daily nutrient progress");
+  } catch (error) {
+    console.error("Error updating daily nutrient progress:", error);
+  }
+}
 
 
 
@@ -153,6 +185,9 @@ async function addMeal(event) {
   event.preventDefault();
 
   const date = document.getElementById("meal-date").value;
+  const time = document.getElementById("meal-time").value;
+  const datetime = `${date}T${time}:00`; // Combine date and time into ISO format
+
   const mealType = document.getElementById("meal-type").value;
   const mealSelect = document.getElementById("meal-selection");
   const mealId = mealSelect.value;
@@ -169,93 +204,40 @@ async function addMeal(event) {
   const totalCarbs = carbsPerServing * servings;
   const totalFats = fatsPerServing * servings;
 
-  const response = await fetch("http://localhost:5000/api/meal-logs", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ date, mealType, mealId, totalCalories, totalProtein, totalCarbs, totalFats, servings }),
-  });
-
-  if (response.ok) {
-    // Update the progress bars with the new values
-    updateNutrientProgress({
-      calories: totalCalories,
-      protein: totalProtein,
-      carbs: totalCarbs,
-      fats: totalFats,
+  try {
+    const response = await fetch("http://localhost:5000/api/meal-logs", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        datetime, // Use the combined datetime
+        mealType,
+        mealId,
+        servings,
+      }),
     });
-    // Refresh the weekly meal logs
-    fetchMealLogsForDay(); 
-  } else {
-    alert("Error adding meal log");
+
+    if (response.ok) {
+      await updateDailyNutrientProgress(date, totalCalories, totalProtein, totalCarbs, totalFats);
+      fetchMealLogsForDay(); // Refresh meal logs
+      fetchDailyNutrientProgress(); // Refresh progress display
+    } else {
+      alert("Error adding meal log");
+    }
+  } catch (error) {
+    console.error("Error adding meal:", error);
+    alert("Error adding meal.");
   }
 }
 
 
-function updateNutrientProgress(nutrients) {
-  let progress = JSON.parse(localStorage.getItem("dailyProgress")) || {
-    calories: 0,
-    protein: 0,
-    carbs: 0,
-    fats: 0
-  };
-
-  // Add the new nutrients to the existing progress
-  progress.calories += nutrients.calories;
-  progress.protein += nutrients.protein;
-  progress.carbs += nutrients.carbs;
-  progress.fats += nutrients.fats;
-
-  const calorieGoal = 2000;
-  const proteinGoal = 150;
-  const carbsGoal = 250;
-  const fatsGoal = 70;
-
-  document.getElementById("calorie-progress").style.width = `${Math.min((progress.calories / calorieGoal) * 100, 100)}%`;
-  document.getElementById("calories-consumed").innerText = progress.calories;
-
-  document.getElementById("protein-progress").style.width = `${Math.min((progress.protein / proteinGoal) * 100, 100)}%`;
-  document.getElementById("protein-consumed").innerText = progress.protein;
-
-  document.getElementById("carbs-progress").style.width = `${Math.min((progress.carbs / carbsGoal) * 100, 100)}%`;
-  document.getElementById("carbs-consumed").innerText = progress.carbs;
-
-  document.getElementById("fats-progress").style.width = `${Math.min((progress.fats / fatsGoal) * 100, 100)}%`;
-  document.getElementById("fats-consumed").innerText = progress.fats;
-
-  // Save updated progress to local storage
-  localStorage.setItem("dailyProgress", JSON.stringify(progress));
+async function updateProgressAfterMealLog() {
+  await fetchDailyNutrientProgress(); // Update progress from the backend
+  fetchMealLogsForDay();              // Refresh meal logs
 }
 
-
-function loadDailyProgress() {
-  const storedData = JSON.parse(localStorage.getItem("dailyProgress")) || {
-    date: new Date().toDateString(),  // Initialize with today’s date
-    calories: 0,
-    protein: 0,
-    carbs: 0,
-    fats: 0
-  };
-
-  // Check if stored date is today’s date
-  const today = new Date().toDateString();
-  if (storedData.date !== today) {
-    // Reset progress if date has changed
-    localStorage.setItem("dailyProgress", JSON.stringify({
-      date: today,
-      calories: 0,
-      protein: 0,
-      carbs: 0,
-      fats: 0
-    }));
-    updateProgressBars({ calories: 0, protein: 0, carbs: 0, fats: 0 });
-  } else {
-    // If date is the same, load the stored progress
-    updateProgressBars(storedData);
-  }
-}
 
 // Handle expired tokens
 function handleTokenExpiration() {
@@ -263,46 +245,33 @@ function handleTokenExpiration() {
   window.location.href = '../Login/login.html';
 }
 
-function saveDailyProgress(calories, protein, carbs, fats) {
-  const today = new Date().toDateString();
 
-  let progress = JSON.parse(localStorage.getItem("dailyProgress")) || {
-    date: today,
-    calories: 0,
-    protein: 0,
-    carbs: 0,
-    fats: 0
-  };
-
-  // Only update the current day's values
-  progress.calories += calories;
-  progress.protein += protein;
-  progress.carbs += carbs;
-  progress.fats += fats;
-  progress.date = today;
-
-  // Save updated progress to local storage
-  localStorage.setItem("dailyProgress", JSON.stringify(progress));
-
-  // Update the progress bars immediately
-  updateProgressBars(progress);
-}
 
 function updateProgressBars(progress) {
-  const calorieGoal = 2000;
-  const proteinGoal = 150;
-  const carbsGoal = 250;
-  const fatsGoal = 70;
+  const calorieGoal = parseFloat(document.getElementById("calorie-goal").innerText) || 1;
+  const proteinGoal = parseFloat(document.getElementById("protein-goal").innerText) || 1;
+  const carbsGoal = parseFloat(document.getElementById("carbs-goal").innerText) || 1;
+  const fatsGoal = parseFloat(document.getElementById("fats-goal").innerText) || 1;
 
-  document.getElementById("calorie-progress").style.width = `${Math.min((progress.calories / calorieGoal) * 100, 100)}%`;
-  document.getElementById("calories-consumed").innerText = progress.calories;
-
-  document.getElementById("protein-progress").style.width = `${Math.min((progress.protein / proteinGoal) * 100, 100)}%`;
-  document.getElementById("protein-consumed").innerText = progress.protein;
-
-  document.getElementById("carbs-progress").style.width = `${Math.min((progress.carbs / carbsGoal) * 100, 100)}%`;
-  document.getElementById("carbs-consumed").innerText = progress.carbs;
-
-  document.getElementById("fats-progress").style.width = `${Math.min((progress.fats / fatsGoal) * 100, 100)}%`;
-  document.getElementById("fats-consumed").innerText = progress.fats;
+  document.getElementById("calorie-progress").style.width = `${(progress.calories / calorieGoal) * 100}%`;
+  document.getElementById("protein-progress").style.width = `${(progress.protein / proteinGoal) * 100}%`;
+  document.getElementById("carbs-progress").style.width = `${(progress.carbs / carbsGoal) * 100}%`;
+  document.getElementById("fats-progress").style.width = `${(progress.fat / fatsGoal) * 100}%`;
 }
+
+
+
+document.addEventListener('DOMContentLoaded',  () => {
+  fetchMealPlanGoals();         // Fetch goals
+  fetchDailyNutrientProgress(); // Fetch daily progress
+  fetchMealLogsForDay();        // Fetch meals for the day
+  fetchAvailableMeals();        // Fetch available meals
+  
+
+  document.getElementById("meal-type").addEventListener("change", (event) => {
+      fetchAvailableMeals(event.target.value); // Fetch meals based on type
+  });
+
+  document.getElementById("meal-selection").addEventListener("change", displayMealInfo);
+});
+
