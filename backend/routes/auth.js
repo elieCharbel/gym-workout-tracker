@@ -7,7 +7,7 @@ const authenticateToken = require('../middlewares/authMiddleware');
 router.post('/register', registerUser);
 router.post('/login', loginUser)
 router.get('/verify', authenticateToken, async (req, res) => {
-    const userId = req.user.id; // Assuming `authenticateToken` attaches `user` to `req`
+    const userId = req.user.id; 
 
     try {
         // Query the database to check if the user exists
