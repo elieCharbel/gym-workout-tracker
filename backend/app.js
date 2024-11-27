@@ -15,6 +15,8 @@ const authRoutes = require('./routes/auth');
 const workoutPlanRoutes = require("./routes/workoutPlans");
 const userRoutes = require('./routes/userRoutes');
 const dietRoutes = require('./routes/dietRoutes');
+const progressRoutes = require('./routes/progressRoutes');
+
 
 
 
@@ -23,6 +25,7 @@ app.use('/api/auth', authRoutes);  // All authentication-related routes
 app.use('/api/workout-plans', workoutPlanRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api', dietRoutes);
+app.use('/api', progressRoutes);
 
 // Error Handling Middleware (optional, good for debugging)
 app.use((err, req, res, next) => {

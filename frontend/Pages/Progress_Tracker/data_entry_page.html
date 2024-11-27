@@ -1,49 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Data Entry - Workout Tracker</title>
-    <script src="script.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="styles.css" rel="stylesheet">
-</head>
-<body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg">
-  <div class="container">
-    <a class="navbar-brand">Workout Tracker</a>
-    <div class="navbar-nav ms-auto" style="margin-right: -80px">
-      <a class="nav-link" href="../main page/main.html">Main Page</a>
-    </div>
-  </div>
-</nav>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand">Workout Tracker</a>
+        <div class="navbar-nav ms-auto" style="margin-right: -80px">
+          <a class="nav-link" href="../main page/main.html">Main Page</a>
+        </div>
+      </div>
+    </nav>
 
-<div class="container mt-5">
-  <h1 class="text-center">Enter Workout Progress for <span id="selectedDate"></span></h1>
-  <form id="progressForm">
-    <div class="input-container mb-3">
-      <label for="weight" class="form-label">Weight (kg)</label>
-      <input type="number" id="weight" class="form-control" min="50" required>
-    </div>
-    <div class="input-container mb-3">
-      <label for="bodyFat" class="form-label">Body Fat (%)</label>
-      <input type="number" id="bodyFat" class="form-control" min="10" required>
-    </div>
-    <div class="input-container mb-3">
-      <label for="bmi" class="form-label">BMI</label>
-      <input type="number" id="bmi" class="form-control" min="12" required>
-    </div>
-    <div class="input-container mb-3">
-      <label for="muscleMass" class="form-label">Muscle Mass (kg)</label>
-      <input type="number" id="muscleMass" class="form-control" min="4" required>
-    </div>
-    <button type="button" class="btn btn-success" onclick="saveAndGoToReview()">Save and Review</button>
-  </form>
-</div>
+    <div class="container mt-5">
+      <div class="mb-5"><h1 class="text-center">Log Your Progress</h1></div>
 
+      <form id="progressForm">
+        <div class="input-container mb-3">
+          <label for="progressDate" class="form-label">Date</label>
+          <input type="date" id="progressDate" class="form-control" required />
+        </div>
+        <div class="input-container mb-3">
+          <label for="weight" class="form-label">Weight (kg)</label>
+          <input
+            type="number"
+            id="weight"
+            class="form-control"
+            min="50"
+            required
+          />
+        </div>
+        <div class="input-container mb-3">
+          <label for="bodyFatPercentage" class="form-label">Body Fat (%)</label>
+          <input
+            type="number"
+            id="bodyFatPercentage"
+            class="form-control"
+            min="10"
+            required
+          />
+        </div>
+        <div class="input-container mb-3">
+          <label for="bmi" class="form-label">BMI</label>
+          <input
+            type="number"
+            id="bmi"
+            class="form-control"
+            min="12"
+            required
+          />
+        </div>
+        <div class="input-container mb-3">
+          <label for="muscleMass" class="form-label">Muscle Mass (kg)</label>
+          <input
+            type="number"
+            id="muscleMass"
+            class="form-control"
+            min="4"
+            required
+          />
+        </div>
+        <button
+          type="button"
+          class="btn btn-success"
+          onclick="saveAndGoToReview()"
+        >
+          Save and Review
+        </button>
+      </form>
+    </div>
 
-
-</body>
+    <script src="data_entry.js"></script>
+    <script src="authUtils.js"></script>
+  </body>
 </html>
