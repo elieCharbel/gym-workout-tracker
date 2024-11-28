@@ -3840,7 +3840,7 @@ textarea.form-control-lg {
   padding: var(--bs-navbar-toggler-padding-y) var(--bs-navbar-toggler-padding-x);
   font-size: var(--bs-navbar-toggler-font-size);
   line-height: 1;
-  color: var(--bs-navbar-color);
+  color: white;
   background-color: transparent;
   border: var(--bs-border-width) solid var(--bs-navbar-toggler-border-color);
   border-radius: var(--bs-navbar-toggler-border-radius);
@@ -3859,7 +3859,17 @@ textarea.form-control-lg {
   outline: 0;
   box-shadow: 0 0 0 var(--bs-navbar-toggler-focus-width);
 }
+#navbarResponsive.collapse {
+  display: none;
+}
 
+/* Show the navbar when the 'collapse' class is removed (toggle) */
+#navbarResponsive.collapse.show {
+  display: block;
+}
+.collapse.show {
+  display: block; /* This should be block for the navbar to show */
+}
 .navbar-toggler-icon {
   display: inline-block;
   width: 1.5em;

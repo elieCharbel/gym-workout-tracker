@@ -25,7 +25,7 @@ async function loginUser(email, password) {
           window.location.href = '../main page/main.html';
       } else {
           const errorData = await response.json();
-          alert(`Login failed: ${errorData.message}`);
+          alert(`Wrong user name or password.`);
       }
   } catch (error) {
       console.error('Error:', error);

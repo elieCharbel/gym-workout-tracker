@@ -12,7 +12,7 @@
   </head>
   <body>
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg" style="background-color: #212529">
       <div class="container">
         <!-- Centered items -->
         <div class="navbar-nav ml-5">
@@ -56,14 +56,14 @@
             <input type="text" id="plan-name" class="form-control" placeholder="e.g., Weight Loss Plan" required />
           </div>
           
-          <button type="submit" class="btn btn-primary">Create Meal Plan</button>
+          <button type="submit" class="btn btn-primary"style="background-color: #212529">Create Meal Plan</button>
           <button type="button" id="end-plan" class="btn btn-secondary mt-2">End Current Meal Plan</button>
         </form>
       </div>
       <div id="plan-status" class="mt-4"></div> <!-- Display plan status here -->
     </div>
     
-    <div id="current-plan" class="mt-4 p-3 text-bg-secondary text-white rounded shadow-sm">
+    <div id="current-plan" class="mt-4 p-3 text-bg-dark text-white rounded shadow-sm">
       <h4>Current Meal Plan</h4>
       <p id="plan-details">No active meal plan</p>
     </div>
