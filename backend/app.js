@@ -12,7 +12,7 @@ app.use(express.json());  // Parse incoming requests with JSON payloads
 
 // Import routes
 const authRoutes = require('./routes/auth');
-const workoutPlanRoutes = require("./routes/workoutPlans");
+const workoutPlanRoutes = require("./routes/workoutRoutes");
 const userRoutes = require('./routes/userRoutes');
 const dietRoutes = require('./routes/dietRoutes');
 const progressRoutes = require('./routes/progressRoutes');
